@@ -100,6 +100,19 @@ class HomePageState extends State<HomePage> {
     return 'Exercícios completados: $complete/$total';
   }
 
+  getExercices() {
+    var exercises = this.training.exercises;
+    return exercises.map((exercise) {
+      var index = exercises.indexOf(exercise);
+      return ExerciseItem(
+        exercise,
+        index == 0,
+        index + 1 == exercises.length,
+        index,
+      );
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     var name = this.training.name;
@@ -137,9 +150,7 @@ class HomePageState extends State<HomePage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
-            children: exercises
-                .map((exercise) => ExerciseItem(exercise, true, false, 0))
-                .toList(),
+            children: getExercices(),
           )
         ],
       ),
