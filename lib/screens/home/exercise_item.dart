@@ -70,7 +70,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
     
 
     return Container(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.only(top: 12, left: 16, right: 16, bottom: 12),
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           border: border,

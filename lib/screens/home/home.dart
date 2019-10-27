@@ -90,7 +90,7 @@ class HomePageState extends State<HomePage> {
 
   HomePageState() {
     var data =
-        '{"name":"Perna + Ombro","completed":0,"total":20,"exercises":[{"date":"2019-08-11T18:12:53.506Z","rest":30,"exercises":[{"name":"Warmup","typeSerie":1,"series":4,"repetitions":10},{"name":"Warmup 2","typeSerie":2,"series":4,"repetitions":10}]}]}';
+        '{"name":"Perna + Ombro","completed":0,"total":20,"exercises":[{"date":"2019-08-11T18:12:53.506Z","rest":30,"exercises":[{"name":"Warmup","typeSerie":1,"series":4,"repetitions":10}]}, {"date":"2019-08-11T18:12:53.506Z","rest":30,"exercises":[{"name":"Warmup","typeSerie":1,"series":4,"repetitions":10},{"name":"Warmup 2","typeSerie":2,"series":4,"repetitions":10}]}, {"date":"2019-08-11T18:12:53.506Z","rest":30,"exercises":[{"name":"Warmup","typeSerie":1,"series":4,"repetitions":10}]}, {"date":"2019-08-11T18:12:53.506Z","rest":30,"exercises":[{"name":"Warmup","typeSerie":1,"series":4,"repetitions":10}]}]}';
     training = Training.fromJson(json.decode(data));
   }
 
@@ -110,11 +110,10 @@ class HomePageState extends State<HomePage> {
         title: Text('My training'),
       ),
       drawer: UserDrawer(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(top: 12, left: 16, right: 16, bottom: 12),
+            padding: EdgeInsets.only(top: 24, left: 16, right: 16, bottom: 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -135,7 +134,7 @@ class HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Row(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: exercises
