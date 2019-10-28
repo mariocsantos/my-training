@@ -54,77 +54,136 @@ class _ExerciseItemState extends State<ExerciseItem> {
     return '$series $serieName de $repetitions $repetitionsName';
   }
 
+  getTimeLineAlignment() {
+    if (this.first) {
+      return Alignment.bottomCenter;
+    }
+
+    if (this.last) {
+      return Alignment.topCenter;
+    }
+
+    return Alignment.center;
+  }
+
+  getLineHeight() {
+    if (this.first || this.last) {
+      return 0.5;
+    }
+
+    return 1.0;
+  }
+
+  getTimeLine() {
+    int index = this.index + 1;
+
+    var circle = Container(
+      width: 24,
+      height: 24,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Theme.of(context).accentColor,
+      ),
+      child: Text(
+        index.toString(),
+        style: TextStyle(
+          fontSize: 14,
+          color: Colors.white,
+        ),
+      ),
+    );
+
+    return Stack(
+      children: <Widget>[
+        Positioned.fill(
+          child: Align(
+            alignment: getTimeLineAlignment(),
+            child: FractionallySizedBox(
+              heightFactor: getLineHeight(),
+              child: Container(
+                width: 6,
+                color: Theme.of(context).accentColor,
+              ),
+            ),
+          ),
+        ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: Container(
+              child: circle,
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    int index = this.index + 1;
     BorderSide borderSide = BorderSide(width: 1, color: Colors.grey[200]);
     Border border = Border(top: borderSide, bottom: borderSide);
 
-    if(this.first) {
+    if (this.first) {
       border = Border(bottom: borderSide);
     }
 
     if (this.last) {
       border = Border(top: borderSide);
     }
-    
 
     return Container(
-        padding: EdgeInsets.only(top: 12, left: 16, right: 16, bottom: 12),
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          border: border,
-        ),
-        child: Row(
-          children: <Widget>[
-            Container(
-              width: 24,
-              height: 24,
-              alignment: Alignment.center,
+      width: MediaQuery.of(context).size.width,
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            top: 0,
+            left: 0,
+            bottom: 0,
+            width: 64,
+            child: getTimeLine(),
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 64),
+            width: MediaQuery.of(context).size.width,
+            child: Container(
+              padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Theme.of(context).accentColor,
+                border: border,
               ),
-              margin: EdgeInsets.only(
-                bottom: 8,
-                right: 24,
-              ),
-              child: Text(
-                index.toString(),
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            Column(
-              children: list.exercises
-                  .map(
-                    (exercise) => Container(
-                      padding: EdgeInsets.only(top: 4, bottom: 4,),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            exercise.name,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: list.exercises
+                    .map(
+                      (exercise) => Container(
+                        padding: EdgeInsets.only(top: 4, bottom: 4),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              exercise.name,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                          Text(
-                            getSeriesAndRepetitions(exercise),
-                            style: TextStyle(
-                              fontSize: 14,
+                            Text(
+                              getSeriesAndRepetitions(exercise),
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                  .toList(),
+                    )
+                    .toList(),
+              ),
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -102,6 +102,7 @@ class HomePageState extends State<HomePage> {
 
   getExercices() {
     var exercises = this.training.exercises;
+    
     return exercises.map((exercise) {
       var index = exercises.indexOf(exercise);
       return ExerciseItem(
@@ -116,7 +117,6 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var name = this.training.name;
-    var exercises = this.training.exercises;
 
     return Scaffold(
       appBar: AppBar(
