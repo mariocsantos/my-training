@@ -47,6 +47,7 @@ class LoginPageState extends State<LoginPage> {
                         child: Column(
                           children: <Widget>[
                             Container(
+                              width: double.infinity,
                               margin: EdgeInsets.only(
                                 bottom: 24,
                                 top: 24,
