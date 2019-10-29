@@ -10,7 +10,12 @@ class TrainingPageState extends State<TrainingPage> {
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
         appBar: AppBar(
-          leading: Icon(Icons.close),
+          leading: IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           elevation: 0,
         ),
         body: Stack(
@@ -79,7 +84,10 @@ class TrainingPageState extends State<TrainingPage> {
                 Radius.circular(4),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/rest');
+            },
+            heroTag: 'trainingFinished',
           ),
         ));
   }

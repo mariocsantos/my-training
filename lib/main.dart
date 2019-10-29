@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_training/screens/login/login.dart';
-import 'package:my_training/screens/rest/rest.dart';
-import 'package:my_training/screens/training/training.dart';
-import './screens/home/home.dart';
+
+import 'routes.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,7 +14,8 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.blueAccent[400],
         brightness: Brightness.dark
       ),
-      home: LoginPage(),
+      initialRoute: '/login',
+      routes: routes,
     );
   }
 }

@@ -58,6 +58,7 @@ class LoginFormState extends State<LoginForm> {
               minWidth: double.infinity,
               child: RaisedButton(
                 onPressed: () {
+                  Navigator.pushNamed(context, '/');
                   if (_formKey.currentState.validate()) {
                     Scaffold.of(context).showSnackBar(
                         SnackBar(content: Text('Processing Data')));

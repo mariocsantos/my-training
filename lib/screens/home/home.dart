@@ -112,12 +112,7 @@ class HomePageState extends State<HomePage> {
       var lastDone = index == 0 ? false : exercises[index - 1].done;
 
       return ExerciseItem(
-        exercise,
-        index == 0,
-        index + 1 == exercises.length,
-        index,
-        lastDone
-      );
+          exercise, index == 0, index + 1 == exercises.length, index, lastDone);
     }).toList();
   }
 
@@ -164,6 +159,10 @@ class HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         tooltip: 'Começar',
         child: Icon(Icons.play_arrow),
+        heroTag: 'homePlay',
+        onPressed: () {
+          Navigator.pushNamed(context, '/training');
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
