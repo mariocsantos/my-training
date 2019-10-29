@@ -8,17 +8,19 @@ class ExerciseItem extends StatefulWidget {
   bool first;
   bool last;
   int index;
+  bool focus;
 
-  ExerciseItem(list, first, last, index) {
+  ExerciseItem(list, first, last, index, focus) {
     this.list = list;
     this.first = first;
     this.last = last;
     this.index = index;
+    this.focus = focus;
   }
 
   @override
-  _ExerciseItemState createState() =>
-      _ExerciseItemState(this.list, this.first, this.last, this.index);
+  _ExerciseItemState createState() => _ExerciseItemState(
+      this.list, this.first, this.last, this.index, this.focus);
 }
 
 class _ExerciseItemState extends State<ExerciseItem> {
@@ -26,12 +28,14 @@ class _ExerciseItemState extends State<ExerciseItem> {
   bool first;
   bool last;
   int index;
+  bool focus;
 
-  _ExerciseItemState(list, first, last, index) {
+  _ExerciseItemState(list, first, last, index, focus) {
     this.list = list;
     this.first = first;
     this.last = last;
     this.index = index;
+    this.focus = focus;
   }
 
   String getSeriesAndRepetitions(Exercise exercise) {
@@ -76,6 +80,29 @@ class _ExerciseItemState extends State<ExerciseItem> {
 
   getTimeLine() {
     int index = this.index + 1;
+    var textColor = list.done || this.focus ? Colors.white : Colors.black;
+
+    var text = Text(
+      index.toString(),
+      style: TextStyle(
+        fontSize: 14,
+        color: textColor,
+      ),
+    );
+
+    var icon = Icon(
+      Icons.done,
+      size: 16,
+      color: textColor,
+    );
+
+    var timeLineColor = Colors.grey[300];
+
+    if (this.list.done) {
+      timeLineColor = Colors.green;
+    } else if (focus) {
+      timeLineColor = Theme.of(context).accentColor;
+    } 
 
     var circle = Container(
       width: 24,
@@ -83,15 +110,9 @@ class _ExerciseItemState extends State<ExerciseItem> {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Theme.of(context).accentColor,
+        color: timeLineColor,
       ),
-      child: Text(
-        index.toString(),
-        style: TextStyle(
-          fontSize: 14,
-          color: Colors.white,
-        ),
-      ),
+      child: list.done ? icon : text,
     );
 
     return Stack(
@@ -103,7 +124,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
               heightFactor: getLineHeight(),
               child: Container(
                 width: 6,
-                color: Theme.of(context).accentColor,
+                color: timeLineColor,
               ),
             ),
           ),

@@ -29,13 +29,16 @@ class Training {
 class ExerciseList {
   String date;
   int rest;
+  bool done;
   List<Exercise> exercises;
 
-  ExerciseList({this.date, this.rest, this.exercises});
+  ExerciseList({this.date, this.rest, this.exercises, this.done});
 
   ExerciseList.fromJson(Map<String, dynamic> json) {
     date = json['date'];
     rest = json['rest'];
+    done = json['done'] ?? false;
+
     if (json['exercises'] != null) {
       exercises = new List<Exercise>();
       json['exercises'].forEach((v) {
@@ -48,6 +51,7 @@ class ExerciseList {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['date'] = this.date;
     data['rest'] = this.rest;
+    data['done'] = this.done ?? false;
     if (this.exercises != null) {
       data['exercises'] = this.exercises.map((v) => v.toJson()).toList();
     }
@@ -90,7 +94,7 @@ class HomePageState extends State<HomePage> {
 
   HomePageState() {
     var data =
-        '{"name":"Perna + Ombro","completed":0,"total":20,"exercises":[{"date":"2019-08-11T18:12:53.506Z","rest":30,"exercises":[{"name":"Warmup","typeSerie":1,"series":4,"repetitions":10}]}, {"date":"2019-08-11T18:12:53.506Z","rest":30,"exercises":[{"name":"Warmup","typeSerie":1,"series":4,"repetitions":10},{"name":"Warmup 2","typeSerie":2,"series":4,"repetitions":10}]}, {"date":"2019-08-11T18:12:53.506Z","rest":30,"exercises":[{"name":"Warmup","typeSerie":1,"series":4,"repetitions":10}]}, {"date":"2019-08-11T18:12:53.506Z","rest":30,"exercises":[{"name":"Warmup","typeSerie":1,"series":4,"repetitions":10}]}]}';
+        '{"name":"Perna + Ombro","completed":0,"total":20,"exercises":[{"date":"2019-08-11T18:12:53.506Z","rest":30, "done":true, "exercises":[{"name":"Warmup","typeSerie":1,"series":4,"repetitions":10}]}, {"date":"2019-08-11T18:12:53.506Z","rest":30,"exercises":[{"name":"Warmup","typeSerie":1,"series":4,"repetitions":10},{"name":"Warmup 2","typeSerie":2,"series":4,"repetitions":10}]}, {"date":"2019-08-11T18:12:53.506Z","rest":30,"exercises":[{"name":"Warmup","typeSerie":1,"series":4,"repetitions":10}]}, {"date":"2019-08-11T18:12:53.506Z","rest":30,"exercises":[{"name":"Warmup","typeSerie":1,"series":4,"repetitions":10}]}]}';
     training = Training.fromJson(json.decode(data));
   }
 
@@ -102,14 +106,17 @@ class HomePageState extends State<HomePage> {
 
   getExercices() {
     var exercises = this.training.exercises;
-    
+
     return exercises.map((exercise) {
       var index = exercises.indexOf(exercise);
+      var lastDone = index == 0 ? false : exercises[index - 1].done;
+
       return ExerciseItem(
         exercise,
         index == 0,
         index + 1 == exercises.length,
         index,
+        lastDone
       );
     }).toList();
   }
