@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_training/screens/login/login.dart';
 import 'package:my_training/screens/rest/rest.dart';
 import 'package:my_training/screens/training/training.dart';
 import './screens/home/home.dart';
@@ -13,9 +14,10 @@ class MyApp extends StatelessWidget {
       title: 'My training',
       theme: ThemeData(
         primaryColor: Colors.grey[900],
-        accentColor: Colors.blueAccent[400]
+        accentColor: Colors.blueAccent[400],
+        brightness: Brightness.dark
       ),
-      home: RestPage(),
+      home: LoginPage(),
     );
   }
 }
