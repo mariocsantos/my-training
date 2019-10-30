@@ -9,6 +9,13 @@ final ThemeData lightTheme = ThemeData(
     fillColor: Colors.black.withOpacity(0.1),
     filled: true,
   ),
+  appBarTheme: AppBarTheme(
+    color: Colors.grey[900],
+  ),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: Colors.blueAccent[400],
+    foregroundColor: Colors.white,
+  )
 );
 
 final ThemeData darkTheme = ThemeData(
@@ -20,4 +27,11 @@ final ThemeData darkTheme = ThemeData(
     fillColor: Colors.white.withOpacity(0.1),
     filled: true,
   ),
+  appBarTheme: AppBarTheme(
+    color: Colors.grey[900],
+  ),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: Colors.blueAccent[400],
+    foregroundColor: Colors.white,
+  )
 );

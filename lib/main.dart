@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'My training',
-      theme: lightTheme,
+      theme: darkTheme,
       darkTheme: darkTheme,
       initialRoute: '/login',
       routes: routes,

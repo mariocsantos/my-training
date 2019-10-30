@@ -80,7 +80,12 @@ class _ExerciseItemState extends State<ExerciseItem> {
 
   getTimeLine() {
     int index = this.index + 1;
-    var textColor = list.done || this.focus ? Colors.white : Colors.black;
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    var textColor = isDark ? Colors.white : Colors.black;
+
+    if (list.done || this.focus) {
+      textColor = Colors.white;
+    }
 
     var text = Text(
       index.toString(),
@@ -96,12 +101,12 @@ class _ExerciseItemState extends State<ExerciseItem> {
       color: textColor,
     );
 
-    var timeLineColor = Colors.grey[300];
+    var timeLineColor = isDark ? Colors.grey[800] : Colors.grey[300];
 
     if (this.list.done) {
       timeLineColor = Colors.green;
     } else if (focus) {
-      timeLineColor = Theme.of(context).accentColor;
+      timeLineColor = Theme.of(context).primaryColor;
     } 
 
     var circle = Container(
@@ -143,7 +148,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
 
   @override
   Widget build(BuildContext context) {
-    BorderSide borderSide = BorderSide(width: 1, color: Colors.grey[200]);
+    BorderSide borderSide = BorderSide(width: 1, color: Theme.of(context).dividerColor);
     Border border = Border(top: borderSide, bottom: borderSide);
 
     if (this.first) {
