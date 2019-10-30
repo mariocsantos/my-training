@@ -8,7 +8,7 @@ class RestPage extends StatefulWidget {
 class RestPageState extends State<RestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.grey[900],
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.close),
