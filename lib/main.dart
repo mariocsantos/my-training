@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'routes.dart';
+import 'themes.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,11 +10,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'My training',
-      theme: ThemeData(
-        primaryColor: Colors.grey[900],
-        accentColor: Colors.blueAccent[400],
-        brightness: Brightness.dark
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
       initialRoute: '/login',
       routes: routes,
     );

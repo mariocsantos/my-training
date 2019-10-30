@@ -15,9 +15,9 @@ class LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: SafeArea(
         child: Container(
-          color: Theme.of(context).primaryColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -96,6 +96,7 @@ class LoginPageState extends State<LoginPage> {
                                     margin: EdgeInsets.only(right: 24),
                                     child: FloatingActionButton(
                                       backgroundColor: Colors.red,
+                                      foregroundColor: Colors.white,
                                       onPressed: () {},
                                       child: Icon(CustomIcons.google),
                                       heroTag: 'loginGoogle',
@@ -103,9 +104,10 @@ class LoginPageState extends State<LoginPage> {
                                   ),
                                   FloatingActionButton(
                                     backgroundColor: Colors.blue[700],
+                                    foregroundColor: Colors.white,
                                     onPressed: () {},
                                     child: Icon(CustomIcons.facebook),
-                                      heroTag: 'loginFacebook',
+                                    heroTag: 'loginFacebook',
                                   ),
                                 ],
                               ),
@@ -120,7 +122,10 @@ class LoginPageState extends State<LoginPage> {
               Container(
                 padding: EdgeInsets.only(left: paddingSide, right: paddingSide),
                 height: 44,
-                color: Colors.grey[800],
+                color: (Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black)
+                    .withOpacity(0.1),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -129,13 +134,12 @@ class LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w300,
-                        color: Colors.white,
                       ),
                     ),
                     Text(
                       'CRIE UMA',
                       style: TextStyle(
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.w600,
                         fontSize: 13,
                       ),

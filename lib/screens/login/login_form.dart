@@ -9,9 +9,9 @@ class LoginForm extends StatefulWidget {
 
 class LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
+
     return Form(
       key: _formKey,
       child: Column(
@@ -19,8 +19,6 @@ class LoginFormState extends State<LoginForm> {
         children: <Widget>[
           TextFormField(
             decoration: InputDecoration(
-              fillColor: Color.fromRGBO(255, 255, 255, 0.1),
-              filled: true,
               labelText: 'E-mail*',
             ),
             validator: (value) {
@@ -35,8 +33,6 @@ class LoginFormState extends State<LoginForm> {
             child: TextFormField(
               obscureText: true,
               decoration: InputDecoration(
-                fillColor: Color.fromRGBO(255, 255, 255, 0.1),
-                filled: true,
                 labelText: 'Senha*',
                 helperText: 'Esqueci minha senha',
                 suffixIcon: IconButton(
@@ -57,6 +53,7 @@ class LoginFormState extends State<LoginForm> {
             child: ButtonTheme(
               minWidth: double.infinity,
               child: RaisedButton(
+                textColor: Theme.of(context).primaryTextTheme.button.color,
                 onPressed: () {
                   Navigator.pushNamed(context, '/');
                   if (_formKey.currentState.validate()) {
