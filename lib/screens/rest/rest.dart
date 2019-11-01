@@ -8,18 +8,19 @@ class RestPage extends StatefulWidget {
 class RestPageState extends State<RestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[900],
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.close),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          elevation: 0,
+      backgroundColor: Colors.grey[900],
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        body: Align(
-          alignment: Alignment.center,
-        ));
+        elevation: 0,
+      ),
+      body: Align(
+        alignment: Alignment.center,
+      ),
+    );
   }
 }

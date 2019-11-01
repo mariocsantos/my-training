@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_training/core/authentication.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -9,9 +10,12 @@ class LoginForm extends StatefulWidget {
 
 class LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
+  final _auth = new Auth();
+  String email;
+  String password;
+
   @override
   Widget build(BuildContext context) {
-
     return Form(
       key: _formKey,
       child: Column(
@@ -21,6 +25,9 @@ class LoginFormState extends State<LoginForm> {
             decoration: InputDecoration(
               labelText: 'E-mail*',
             ),
+            onChanged: (value) {
+              this.email = value;
+            },
             validator: (value) {
               if (value.isEmpty) {
                 return 'Escreva seu e-mail.';
@@ -39,12 +46,16 @@ class LoginFormState extends State<LoginForm> {
                   icon: Icon(Icons.visibility),
                   onPressed: () {},
                 ),
+                focusColor: Colors.red,
               ),
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Escreva sua senha.';
                 }
                 return null;
+              },
+              onChanged: (value) {
+                this.password = value;
               },
             ),
           ),
@@ -54,12 +65,16 @@ class LoginFormState extends State<LoginForm> {
               minWidth: double.infinity,
               child: RaisedButton(
                 textColor: Theme.of(context).primaryTextTheme.button.color,
-                onPressed: () {
-                  Navigator.pushNamed(context, '/');
+                onPressed: () async {
                   if (_formKey.currentState.validate()) {
-                    Scaffold.of(context).showSnackBar(
-                        SnackBar(content: Text('Processing Data')));
+                    await _auth.signIn(this.email, this.password);
+
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                            '${this.email}, ${this.password}; ${_auth.getCurrentUser().toString()}')));
                   }
+
+                  // Navigator.pushNamed(context, '/');
                 },
                 child: Text('BORA TREINAR'),
               ),
