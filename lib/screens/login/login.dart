@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 import 'login_form.dart';
 
@@ -26,6 +27,23 @@ class LoginPageState extends State<LoginPage> {
     FirebaseUser user = authResult.user;
     print("signed in " + user.displayName);
     return user;
+  }
+
+initiateFacebookLogin() async {
+    var facebookLogin = FacebookLogin();
+    var facebookLoginResult =
+        await facebookLogin.logInWithReadPermissions(['email']);
+     switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.error:
+        print("Error");
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print("CancelledByUser");
+        break;
+      case FacebookLoginStatus.loggedIn:
+        print("LoggedIn");
+        break;
+    }
   }
 
   Widget build(BuildContext context) {
@@ -119,7 +137,7 @@ class LoginPageState extends State<LoginPage> {
                                         try {
                                           await _signInWithGoogle();
                                         } catch(error) {
-                                          
+
                                         }
                                       },
                                       child: Icon(CustomIcons.google),
@@ -129,7 +147,13 @@ class LoginPageState extends State<LoginPage> {
                                   FloatingActionButton(
                                     backgroundColor: Colors.blue[700],
                                     foregroundColor: Colors.white,
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      try {
+                                          await initiateFacebookLogin();
+                                        } catch(error) {
+
+                                        }
+                                    },
                                     child: Icon(CustomIcons.facebook),
                                     heroTag: 'loginFacebook',
                                   ),
