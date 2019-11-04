@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
+import '../../core/google_auth.dart';
 import '../../core/facebook_auth.dart';
 
-import 'login_form.dart';
-
 import '../../components/custom_icons.dart';
+
+import 'login_form.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,24 +13,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = new GoogleSignIn();
-  final facebookAuth = new FacebookAuth(); 
-
-  Future<FirebaseUser> _signInWithGoogle() async {
-    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    final AuthResult  authResult = await _firebaseAuth.signInWithCredential(credential);
-    FirebaseUser user = authResult.user;
-    print("signed in " + user.displayName);
-    return user;
-  }
-
-  
+  final googleAuth = new GoogleAuth();
+  final facebookAuth = new FacebookAuth();
 
   Widget build(BuildContext context) {
     double paddingSide = 24;
@@ -120,12 +104,7 @@ class LoginPageState extends State<LoginPage> {
                                       backgroundColor: Colors.red,
                                       foregroundColor: Colors.white,
                                       onPressed: () async {
-                                        try {
-                                          await _signInWithGoogle();
-                                          print('sucesso');
-                                        } catch(error) {
-                                          print(error);
-                                        }
+                                        await googleAuth.login();
                                       },
                                       child: Icon(CustomIcons.google),
                                       heroTag: 'loginGoogle',
@@ -136,11 +115,11 @@ class LoginPageState extends State<LoginPage> {
                                     foregroundColor: Colors.white,
                                     onPressed: () async {
                                       try {
-                                          await facebookAuth.singInWithFacebook();
-                                          print('sucesso');
-                                        } catch(error) {
-                                          print(error);
-                                        }
+                                        await facebookAuth.singInWithFacebook();
+                                        print('sucesso');
+                                      } catch (error) {
+                                        print(error);
+                                      }
                                     },
                                     child: Icon(CustomIcons.facebook),
                                     heroTag: 'loginFacebook',
