@@ -1,11 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
-import 'login_form.dart';
+import '../../core/google_auth.dart';
+import '../../core/facebook_auth.dart';
 
 import '../../components/custom_icons.dart';
+
+import 'login_form.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,38 +13,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = new GoogleSignIn();
-
-  Future<FirebaseUser> _signInWithGoogle() async {
-    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    final AuthResult  authResult = await _firebaseAuth.signInWithCredential(credential);
-    FirebaseUser user = authResult.user;
-    print("signed in " + user.displayName);
-    return user;
-  }
-
-initiateFacebookLogin() async {
-    var facebookLogin = FacebookLogin();
-    var facebookLoginResult =
-        await facebookLogin.logInWithReadPermissions(['email']);
-     switch (facebookLoginResult.status) {
-      case FacebookLoginStatus.error:
-        print("Error");
-        break;
-      case FacebookLoginStatus.cancelledByUser:
-        print("CancelledByUser");
-        break;
-      case FacebookLoginStatus.loggedIn:
-        print("LoggedIn");
-        break;
-    }
-  }
+  final googleAuth = new GoogleAuth();
+  final facebookAuth = new FacebookAuth();
 
   Widget build(BuildContext context) {
     double paddingSide = 24;
@@ -134,11 +104,7 @@ initiateFacebookLogin() async {
                                       backgroundColor: Colors.red,
                                       foregroundColor: Colors.white,
                                       onPressed: () async {
-                                        try {
-                                          await _signInWithGoogle();
-                                        } catch(error) {
-
-                                        }
+                                        await googleAuth.login();
                                       },
                                       child: Icon(CustomIcons.google),
                                       heroTag: 'loginGoogle',
@@ -149,10 +115,11 @@ initiateFacebookLogin() async {
                                     foregroundColor: Colors.white,
                                     onPressed: () async {
                                       try {
-                                          await initiateFacebookLogin();
-                                        } catch(error) {
-
-                                        }
+                                        await facebookAuth.singInWithFacebook();
+                                        print('sucesso');
+                                      } catch (error) {
+                                        print(error);
+                                      }
                                     },
                                     child: Icon(CustomIcons.facebook),
                                     heroTag: 'loginFacebook',
