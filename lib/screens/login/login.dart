@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../../core/facebook_auth.dart';
 
 import 'login_form.dart';
 
@@ -14,6 +15,7 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = new GoogleSignIn();
+  final facebookAuth = new FacebookAuth(); 
 
   Future<FirebaseUser> _signInWithGoogle() async {
     GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -27,6 +29,8 @@ class LoginPageState extends State<LoginPage> {
     print("signed in " + user.displayName);
     return user;
   }
+
+  
 
   Widget build(BuildContext context) {
     double paddingSide = 24;
@@ -118,8 +122,9 @@ class LoginPageState extends State<LoginPage> {
                                       onPressed: () async {
                                         try {
                                           await _signInWithGoogle();
+                                          print('sucesso');
                                         } catch(error) {
-                                          
+                                          print(error);
                                         }
                                       },
                                       child: Icon(CustomIcons.google),
@@ -129,7 +134,14 @@ class LoginPageState extends State<LoginPage> {
                                   FloatingActionButton(
                                     backgroundColor: Colors.blue[700],
                                     foregroundColor: Colors.white,
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      try {
+                                          await facebookAuth.singInWithFacebook();
+                                          print('sucesso');
+                                        } catch(error) {
+                                          print(error);
+                                        }
+                                    },
                                     child: Icon(CustomIcons.facebook),
                                     heroTag: 'loginFacebook',
                                   ),
