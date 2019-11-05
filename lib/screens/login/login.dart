@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:my_training/core/authentication.dart';
+import 'package:my_training/core/loading.dart';
 
 import '../../core/google_auth.dart';
 import '../../core/facebook_auth.dart';
@@ -15,6 +19,27 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   final googleAuth = new GoogleAuth();
   final facebookAuth = new FacebookAuth();
+  final auth = new Auth();
+  bool loading = true;
+
+  LoginPageState() {
+    // auth.signOut();
+
+    auth.getCurrentUser().then(
+      (value) {
+        if (value != null) {
+          // Redirect to home
+          return;
+        }
+      },
+    ).whenComplete(
+      () {
+        setState(() {
+          loading = false;
+        });
+      },
+    );
+  }
 
   Widget getHeader() {
     return Container(
@@ -115,9 +140,7 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget build(BuildContext context) {
-    double paddingSide = 24;
-
+  Widget getScaffold() {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).backgroundColor,
@@ -129,8 +152,8 @@ class LoginPageState extends State<LoginPage> {
               Expanded(
                 child: Container(
                   padding: EdgeInsets.only(
-                    left: paddingSide,
-                    right: paddingSide,
+                    left: 24,
+                    right: 24,
                     top: 36,
                     bottom: 36,
                   ),
@@ -162,5 +185,9 @@ class LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Widget build(BuildContext context) {
+    return loading ? Loading() : getScaffold();
   }
 }

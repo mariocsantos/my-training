@@ -19,8 +19,7 @@ class GoogleAuth {
       final AuthResult authResult = await _firebaseAuth.signInWithCredential(credential);
       
       FirebaseUser user = authResult.user;
-      print("signed in " + user.displayName);
-      
+
       return user;
     } catch (error) {
       print('Google login error: ' + error);
