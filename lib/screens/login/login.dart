@@ -1,13 +1,12 @@
-import 'dart:async';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:my_training/core/authentication.dart';
 import 'package:my_training/core/loading.dart';
-
-import '../../core/google_auth.dart';
-import '../../core/facebook_auth.dart';
-import '../../components/custom_icons.dart';
-import '../../components/footer-link.dart';
+import 'package:my_training/core/google_auth.dart';
+import 'package:my_training/core/facebook_auth.dart';
+import 'package:my_training/components/custom_icons.dart';
+import 'package:my_training/components/footer-link.dart';
 
 import 'login_form.dart';
 
@@ -23,22 +22,23 @@ class LoginPageState extends State<LoginPage> {
   bool loading = true;
 
   LoginPageState() {
-    // auth.signOut();
+    checkCurrentUser();
+  }
 
-    auth.getCurrentUser().then(
-      (value) {
-        if (value != null) {
-          // Redirect to home
-          return;
-        }
-      },
-    ).whenComplete(
-      () {
-        setState(() {
-          loading = false;
-        });
-      },
-    );
+  checkCurrentUser() async {
+    try {
+      FirebaseUser user = await auth.getCurrentUser();
+
+      if (user != null) {
+        // Redirect to home
+      }
+    } catch (error) {
+      print('Error to check current user ' + error);
+    } finally {
+      setState(() {
+        loading = false;
+      });
+    }
   }
 
   Widget getHeader() {
