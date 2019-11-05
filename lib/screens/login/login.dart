@@ -30,7 +30,7 @@ class LoginPageState extends State<LoginPage> {
       FirebaseUser user = await auth.getCurrentUser();
 
       if (user != null) {
-        // Redirect to home
+        goToHome();
       }
     } catch (error) {
       print('Error to check current user ' + error);
@@ -39,6 +39,10 @@ class LoginPageState extends State<LoginPage> {
         loading = false;
       });
     }
+  }
+
+  goToHome() {
+    Navigator.pushNamed(context, '/');
   }
 
   Widget getHeader() {
@@ -90,6 +94,7 @@ class LoginPageState extends State<LoginPage> {
         foregroundColor: Colors.white,
         onPressed: () async {
           await googleAuth.login();
+          goToHome();
         },
         child: Icon(CustomIcons.google),
         heroTag: 'loginGoogle',
@@ -102,12 +107,8 @@ class LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.blue[700],
       foregroundColor: Colors.white,
       onPressed: () async {
-        try {
-          await facebookAuth.singInWithFacebook();
-          print('sucesso');
-        } catch (error) {
-          print(error);
-        }
+        await facebookAuth.singInWithFacebook();
+          goToHome();
       },
       child: Icon(CustomIcons.facebook),
       heroTag: 'loginFacebook',

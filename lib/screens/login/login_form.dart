@@ -73,6 +73,8 @@ class LoginFormState extends State<LoginForm> {
     if (_formKey.currentState.validate()) {
       await _auth.signIn(this.email, this.password);
 
+      Navigator.pushNamed(context, '/');
+
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -81,8 +83,6 @@ class LoginFormState extends State<LoginForm> {
         ),
       );
     }
-
-    // Navigator.pushNamed(context, '/');
   }
 
   @override
