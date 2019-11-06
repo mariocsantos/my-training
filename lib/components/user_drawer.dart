@@ -40,25 +40,22 @@ class _UserDrawerState extends State<UserDrawer> {
         children: <Widget>[
           getUserHeader(),
           ListTile(
-            leading: Icon(Icons.power_settings_new),
-            title: Text('Sair'),
+            leading: Icon(Icons.color_lens),
+            trailing: Switch(
+              value: false,
+              onChanged: (value) {
+                // set theme mode
+              },
+            ),
+            title: Text('Usar tema escuro?'),
             onTap: () {
               this.auth.signOut();
               Navigator.pushNamed(context, '/login');
             },
           ),
           ListTile(
-            leading: Container(
-              width: 24,
-              height: 24,
-              child: Checkbox(
-                value: false,
-                onChanged: (value) {
-                  // set theme mode
-                },
-              ),
-            ),
-            title: Text('Usar tema escuro?'),
+            leading: Icon(Icons.power_settings_new),
+            title: Text('Sair'),
             onTap: () {
               this.auth.signOut();
               Navigator.pushNamed(context, '/login');
