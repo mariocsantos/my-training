@@ -98,13 +98,15 @@ class LoginFormState extends State<LoginForm> {
   }
 
   submit() async {
-    if (_formKey.currentState.validate()) {
-      try {
-        await _auth.signIn(this.email.value, this.password.value);
+    if (!_formKey.currentState.validate() || !email.isDirty || !password.isDirty) {
+      return;
+    }
+
+    try {
+        await _auth.signIn(email.value, password.value);
         Navigator.pushNamed(context, '/');
       } catch (error) {
         var errorText;
-
         switch (error.code) {
           case 'ERROR_WRONG_PASSWORD':
             errorText =
@@ -112,9 +114,6 @@ class LoginFormState extends State<LoginForm> {
             break;
           case 'ERROR_INVALID_EMAIL':
             errorText = 'E-mail inválido.';
-            break;
-          case 'ERROR_WRONG_PASSWORD':
-            errorText = 'A senha está incorreta.';
             break;
           case 'ERROR_USER_NOT_FOUND':
             errorText = 'Nenhum e-mail encontrado para este usuário.';
@@ -141,7 +140,6 @@ class LoginFormState extends State<LoginForm> {
           ),
         );
       }
-    }
   }
 
   @override

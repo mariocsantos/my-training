@@ -19,10 +19,11 @@ class _UserDrawerState extends State<UserDrawer> {
         user = snapshot.data;
         if (snapshot.connectionState == ConnectionState.done && user != null) {
           return UserAccountsDrawerHeader(
-            accountName: Text(user.displayName),
+            accountName: Text(user.displayName ?? ''),
             accountEmail: Text(user.email),
             currentAccountPicture: CircleAvatar(
-              backgroundImage: NetworkImage(user.photoUrl),
+              backgroundImage: user.photoUrl != null ? NetworkImage(user?.photoUrl) : null,
+              backgroundColor: Colors.white.withOpacity(0.1),
             ),
           );
         }
@@ -48,10 +49,6 @@ class _UserDrawerState extends State<UserDrawer> {
               },
             ),
             title: Text('Usar tema escuro?'),
-            onTap: () {
-              this.auth.signOut();
-              Navigator.pushNamed(context, '/login');
-            },
           ),
           ListTile(
             leading: Icon(Icons.power_settings_new),
