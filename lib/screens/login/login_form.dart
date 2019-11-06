@@ -41,7 +41,6 @@ class LoginFormState extends State<LoginForm> {
           icon: Icon(Icons.visibility),
           onPressed: () {},
         ),
-        focusColor: Colors.red,
       ),
       validator: (value) {
         if (value.isEmpty) {
