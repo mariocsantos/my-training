@@ -1,13 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_training/core/authentication.dart';
+import 'package:my_training/core/theme/theme_bloc.dart';
+import 'package:my_training/core/theme/theme_event.dart';
 
-class UserDrawer extends StatefulWidget {
-  @override
-  _UserDrawerState createState() => _UserDrawerState();
-}
-
-class _UserDrawerState extends State<UserDrawer> {
+class UserDrawer extends StatelessWidget {
   final auth = new Auth();
 
   FirebaseUser user;
@@ -22,7 +20,8 @@ class _UserDrawerState extends State<UserDrawer> {
             accountName: Text(user.displayName ?? ''),
             accountEmail: Text(user.email),
             currentAccountPicture: CircleAvatar(
-              backgroundImage: user.photoUrl != null ? NetworkImage(user?.photoUrl) : null,
+              backgroundImage:
+                  user.photoUrl != null ? NetworkImage(user?.photoUrl) : null,
               backgroundColor: Colors.white.withOpacity(0.1),
             ),
           );
@@ -36,19 +35,24 @@ class _UserDrawerState extends State<UserDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeBloc themeBloc = BlocProvider.of<ThemeBloc>(context);
+
     return Drawer(
       child: Column(
         children: <Widget>[
           getUserHeader(),
-          ListTile(
-            leading: Icon(Icons.color_lens),
-            trailing: Switch(
-              value: false,
-              onChanged: (value) {
-                // set theme mode
-              },
+          BlocListener<ThemeBloc, bool>(
+            listener: (context, state) {},
+            child: ListTile(
+              leading: Icon(Icons.color_lens),
+              trailing: Switch(
+                value: themeBloc.state,
+                onChanged: (value) {
+                  themeBloc.add(ThemeEvent.toggle);
+                },
+              ),
+              title: Text('Usar tema escuro?'),
             ),
-            title: Text('Usar tema escuro?'),
           ),
           ListTile(
             leading: Icon(Icons.power_settings_new),
