@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:my_training/core/authentication.dart';
+// import 'package:my_training/core/authentication.dart';
 import 'package:my_training/core/loading.dart';
-import 'package:my_training/core/google_auth.dart';
-import 'package:my_training/core/facebook_auth.dart';
+import 'package:my_training/core/auth/auth.dart';
 import 'package:my_training/components/custom_icons.dart';
 import 'package:my_training/components/footer-link.dart';
 
@@ -16,9 +14,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  final googleAuth = new GoogleAuth();
-  final facebookAuth = new FacebookAuth();
-  final auth = new Auth();
+  final _authRepository = new AuthRepository();
   bool loading = true;
 
   LoginPageState() {
@@ -27,7 +23,7 @@ class LoginPageState extends State<LoginPage> {
 
   checkCurrentUser() async {
     try {
-      FirebaseUser user = await auth.getCurrentUser();
+      final user = await _authRepository.getUser();
 
       if (user != null) {
         goToHome();
@@ -93,7 +89,7 @@ class LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.red,
         foregroundColor: Colors.white,
         onPressed: () async {
-          await googleAuth.login();
+          await _authRepository.signInWithGoogle();
           goToHome();
         },
         child: Icon(CustomIcons.google),
@@ -107,7 +103,7 @@ class LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.blue[700],
       foregroundColor: Colors.white,
       onPressed: () async {
-        await facebookAuth.singInWithFacebook();
+        await _authRepository.signInWithFacebook();
           goToHome();
       },
       child: Icon(CustomIcons.facebook),
@@ -189,6 +185,6 @@ class LoginPageState extends State<LoginPage> {
   }
 
   Widget build(BuildContext context) {
-    return loading ? Loading() : getScaffold();
+    return getScaffold();
   }
 }

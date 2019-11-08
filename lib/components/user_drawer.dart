@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_training/core/authentication.dart';
@@ -8,30 +7,29 @@ import 'package:my_training/core/theme/theme_event.dart';
 class UserDrawer extends StatelessWidget {
   final auth = new Auth();
 
-  FirebaseUser user;
 
-  getUserHeader() {
-    return FutureBuilder(
-      future: auth.getCurrentUser(),
-      builder: (context, snapshot) {
-        user = snapshot.data;
-        if (snapshot.connectionState == ConnectionState.done && user != null) {
-          return UserAccountsDrawerHeader(
-            accountName: Text(user.displayName ?? ''),
-            accountEmail: Text(user.email),
-            currentAccountPicture: CircleAvatar(
-              backgroundImage:
-                  user.photoUrl != null ? NetworkImage(user?.photoUrl) : null,
-              backgroundColor: Colors.white.withOpacity(0.1),
-            ),
-          );
-        }
+  // getUserHeader() {
+  //   return FutureBuilder(
+  //     future: auth.getCurrentUser(),
+  //     builder: (context, snapshot) {
+  //       user = snapshot.data;
+  //       if (snapshot.connectionState == ConnectionState.done && user != null) {
+  //         return UserAccountsDrawerHeader(
+  //           accountName: Text(user.displayName ?? ''),
+  //           accountEmail: Text(user.email),
+  //           currentAccountPicture: CircleAvatar(
+  //             backgroundImage:
+  //                 user.photoUrl != null ? NetworkImage(user?.photoUrl) : null,
+  //             backgroundColor: Colors.white.withOpacity(0.1),
+  //           ),
+  //         );
+  //       }
 
-        // TODO: return fake drawer
-        return Text('Carregando');
-      },
-    );
-  }
+  //       // TODO: return fake drawer
+  //       return Text('Carregando');
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +38,7 @@ class UserDrawer extends StatelessWidget {
     return Drawer(
       child: Column(
         children: <Widget>[
-          getUserHeader(),
+          // getUserHeader(),
           BlocListener<ThemeBloc, bool>(
             listener: (context, state) {},
             child: ListTile(
