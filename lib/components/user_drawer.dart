@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_training/core/auth/auth.dart';
 import 'package:my_training/core/authentication.dart';
 import 'package:my_training/core/theme/theme_bloc.dart';
 import 'package:my_training/core/theme/theme_event.dart';
@@ -34,6 +35,7 @@ class UserDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeBloc themeBloc = BlocProvider.of<ThemeBloc>(context);
+    final AuthBloc authBloc = BlocProvider.of<AuthBloc>(context);
 
     return Drawer(
       child: Column(
@@ -56,8 +58,9 @@ class UserDrawer extends StatelessWidget {
             leading: Icon(Icons.power_settings_new),
             title: Text('Sair'),
             onTap: () {
-              this.auth.signOut();
-              Navigator.pushNamed(context, '/login');
+              authBloc.add(LoggedOut());
+              // this.auth.signOut();
+              // Navigator.pushNamed(context, '/login');
             },
           ),
         ],
