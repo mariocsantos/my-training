@@ -8,7 +8,6 @@ import 'package:my_training/core/theme/theme_event.dart';
 class UserDrawer extends StatelessWidget {
   final auth = new Auth();
 
-
   // getUserHeader() {
   //   return FutureBuilder(
   //     future: auth.getCurrentUser(),
@@ -37,33 +36,33 @@ class UserDrawer extends StatelessWidget {
     final ThemeBloc themeBloc = BlocProvider.of<ThemeBloc>(context);
     final AuthBloc authBloc = BlocProvider.of<AuthBloc>(context);
 
-    return Drawer(
-      child: Column(
-        children: <Widget>[
-          // getUserHeader(),
-          BlocListener<ThemeBloc, bool>(
-            listener: (context, state) {},
-            child: ListTile(
-              leading: Icon(Icons.color_lens),
-              trailing: Switch(
-                value: themeBloc.state,
-                onChanged: (value) {
-                  themeBloc.add(ThemeEvent.toggle);
-                },
+    return SafeArea(
+      child: Drawer(
+        child: Column(
+          children: <Widget>[
+            // getUserHeader(),
+            BlocListener<ThemeBloc, bool>(
+              listener: (context, state) {},
+              child: ListTile(
+                leading: Icon(Icons.color_lens),
+                trailing: Switch(
+                  value: themeBloc.state,
+                  onChanged: (value) {
+                    themeBloc.add(ThemeEvent.toggle);
+                  },
+                ),
+                title: Text('Usar tema escuro?'),
               ),
-              title: Text('Usar tema escuro?'),
             ),
-          ),
-          ListTile(
-            leading: Icon(Icons.power_settings_new),
-            title: Text('Sair'),
-            onTap: () {
-              authBloc.add(LoggedOut());
-              // this.auth.signOut();
-              // Navigator.pushNamed(context, '/login');
-            },
-          ),
-        ],
+            ListTile(
+              leading: Icon(Icons.power_settings_new),
+              title: Text('Sair'),
+              onTap: () {
+                authBloc.add(LoggedOut());
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
