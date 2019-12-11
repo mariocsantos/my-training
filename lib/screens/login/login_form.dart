@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_training/components/form_field.dart';
+import 'package:my_training/core/auth/auth.dart';
 import 'package:my_training/core/authentication.dart';
+import 'package:my_training/screens/login/bloc/bloc.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -10,6 +13,8 @@ class LoginForm extends StatefulWidget {
 }
 
 class LoginFormState extends State<LoginForm> {
+  final _authRepository = new AuthRepository();
+
   final _auth = new Auth();
 
   final _formKey = GlobalKey<FormState>();
@@ -17,6 +22,8 @@ class LoginFormState extends State<LoginForm> {
 
   MtFormField email = new MtFormField();
   MtFormField password = new MtFormField();
+
+  LoginBloc _loginBloc;
 
   Widget getEmailField() {
     return TextFormField(
@@ -50,13 +57,13 @@ class LoginFormState extends State<LoginForm> {
     );
   }
 
-  Widget getPasswordField() {
+  Widget getPasswordField(context) {
     return TextFormField(
       obscureText: true,
       textInputAction: TextInputAction.send,
       focusNode: focus,
       onFieldSubmitted: (value) {
-        submit();
+        submit(context);
       },
       decoration: InputDecoration(
         labelText: 'Senha*',
@@ -83,80 +90,104 @@ class LoginFormState extends State<LoginForm> {
     );
   }
 
-  Widget getSubmitButton() {
+  Widget getSubmitButton(context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: ButtonTheme(
         minWidth: double.infinity,
         child: RaisedButton(
           textColor: Theme.of(context).primaryTextTheme.button.color,
-          onPressed: submit,
+          onPressed: () {
+            submit(context);
+          },
           child: Text('BORA TREINAR'),
         ),
       ),
     );
   }
 
-  submit() async {
-    if (!_formKey.currentState.validate() || !email.isDirty || !password.isDirty) {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  submit(context) async {
+    if (!_formKey.currentState.validate() ||
+        !email.isDirty ||
+        !password.isDirty) {
       return;
     }
 
     try {
-        await _auth.signIn(email.value, password.value);
-        Navigator.pushNamed(context, '/');
-      } catch (error) {
-        var errorText;
-        switch (error.code) {
-          case 'ERROR_WRONG_PASSWORD':
-            errorText =
-                'Senha inválida ou o usuário não tem senha cadastrada, tente logar com a conta do google ou facebook.';
-            break;
-          case 'ERROR_INVALID_EMAIL':
-            errorText = 'E-mail inválido.';
-            break;
-          case 'ERROR_USER_NOT_FOUND':
-            errorText = 'Nenhum e-mail encontrado para este usuário.';
-            break;
-          case 'ERROR_USER_DISABLED':
-            errorText = 'Este usuário foi desativado.';
-            break;
-          case 'ERROR_TOO_MANY_REQUESTS':
-            errorText = 'Houve várias tentativas de login para este usuário.';
-            break;
-          case 'ERROR_OPERATION_NOT_ALLOWED':
-            errorText =
-                'Este usuário não tem permissão para acessar o sistema.';
-            break;
-          default:
-            errorText =
-                'Ocorreu um erro inesperado, nosso suporte já foi avisado';
-            break;
-        }
+      _loginBloc = BlocProvider.of<LoginBloc>(context);
 
-        Scaffold.of(context).showSnackBar(
-          SnackBar(
-            content: Text(errorText),
-          ),
-        );
+      _loginBloc.add(
+        LoginButtonPressed(
+          email: email.value,
+          password: password.value,
+        ),
+      );
+      
+      BlocProvider.of<AuthBloc>(context).add(LoggedIn());
+    } catch (error) {
+      var errorText;
+      switch (error.code) {
+        case 'ERROR_WRONG_PASSWORD':
+          errorText =
+              'Senha inválida ou o usuário não tem senha cadastrada, tente logar com a conta do google ou facebook.';
+          break;
+        case 'ERROR_INVALID_EMAIL':
+          errorText = 'E-mail inválido.';
+          break;
+        case 'ERROR_USER_NOT_FOUND':
+          errorText = 'Nenhum e-mail encontrado para este usuário.';
+          break;
+        case 'ERROR_USER_DISABLED':
+          errorText = 'Este usuário foi desativado.';
+          break;
+        case 'ERROR_TOO_MANY_REQUESTS':
+          errorText = 'Houve várias tentativas de login para este usuário.';
+          break;
+        case 'ERROR_OPERATION_NOT_ALLOWED':
+          errorText = 'Este usuário não tem permissão para acessar o sistema.';
+          break;
+        default:
+          errorText =
+              'Ocorreu um erro inesperado, nosso suporte já foi avisado';
+          break;
       }
+
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorText),
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      autovalidate: true,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          getEmailField(),
-          Padding(
-            padding: EdgeInsets.only(top: 24),
-            child: getPasswordField(),
-          ),
-          getSubmitButton(),
-        ],
+    return BlocProvider(
+      builder: (context) => LoginBloc(authRepository: _authRepository),
+      child: BlocBuilder<LoginBloc, LoginState>(
+        builder: (context, event) {
+          print(event);
+          return Form(
+            key: _formKey,
+            autovalidate: true,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                getEmailField(),
+                Padding(
+                  padding: EdgeInsets.only(top: 24),
+                  child: getPasswordField(context),
+                ),
+                getSubmitButton(context),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

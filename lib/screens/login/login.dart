@@ -137,7 +137,7 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget getScaffold() {
+  Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Theme.of(context).backgroundColor,
@@ -182,9 +182,5 @@ class LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  Widget build(BuildContext context) {
-    return getScaffold();
   }
 }
