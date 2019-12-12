@@ -1,26 +1,21 @@
 import 'package:flutter/material.dart';
 
 // import 'package:my_training/core/authentication.dart';
-import 'package:my_training/core/loading.dart';
 import 'package:my_training/core/auth/auth.dart';
 import 'package:my_training/components/custom_icons.dart';
 import 'package:my_training/components/footer-link.dart';
 
 import 'login_form.dart';
 
-class LoginPage extends StatefulWidget {
-  @override
-  LoginPageState createState() => LoginPageState();
-}
+class LoginScreen extends StatelessWidget {
+  final AuthRepository _authRepository;
 
-class LoginPageState extends State<LoginPage> {
-  final _authRepository = new AuthRepository();
-  bool loading = true;
+  LoginScreen({ Key key, @required AuthRepository authRepository})
+    : assert(authRepository != null),
+    _authRepository = authRepository,
+    super(key: key);
 
-  LoginPageState() {
-    checkCurrentUser();
-  }
-
+  // TODO: Remove it
   checkCurrentUser() async {
     try {
       final user = await _authRepository.getUser();
@@ -31,14 +26,11 @@ class LoginPageState extends State<LoginPage> {
     } catch (error) {
       print('Error to check current user ' + error);
     } finally {
-      setState(() {
-        loading = false;
-      });
     }
   }
 
   goToHome() {
-    Navigator.pushNamed(context, '/');
+    // Navigator.pushNamed(context, '/');
   }
 
   Widget getHeader() {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:my_training/core/auth/auth.dart';
-import 'package:my_training/core/auth/auth_repository.dart';
 
 import 'package:my_training/screens/home/home.dart';
 import 'package:my_training/screens/login/login.dart';
@@ -10,17 +10,20 @@ import 'package:my_training/splash_screen.dart';
 import 'core/theme/theme_bloc.dart';
 import 'core/theme/themes.dart';
 
-// import 'routes.dart';
-
 void main() {
+  // Ensure any plugin is initialized
   WidgetsFlutterBinding.ensureInitialized();
+
   final AuthRepository authRepository = AuthRepository();
 
   runApp(
     BlocProvider(
-      builder: (context) =>
-          AuthBloc(authRepository: authRepository)..add(AppStarted()),
-      child: App(authRepository: authRepository),
+      builder: (context) => AuthBloc(
+        authRepository: authRepository,
+      )..add(AppStarted()),
+      child: App(
+        authRepository: authRepository,
+      ),
     ),
   );
 }
@@ -41,11 +44,9 @@ class App extends StatelessWidget {
         builder: (context, isDark) {
           return MaterialApp(
             title: 'My training',
-            theme: isDark ? darkTheme : lightTheme,
-            // initialRoute: '/login',
+            theme: getTheme(isDark),
             home: BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
-                print(state);
                 if (state is Uninitialized) {
                   return SplashScreen();
                 }
@@ -54,13 +55,16 @@ class App extends StatelessWidget {
                   return HomePage();
                 }
 
-                return LoginPage();
+                return LoginScreen(authRepository: _authRepository);
               },
             ),
-            // routes: routes,
           );
         },
       ),
     );
+  }
+
+  ThemeData getTheme(isDark) {
+    return isDark ? darkTheme : lightTheme;
   }
 }
