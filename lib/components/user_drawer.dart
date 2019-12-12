@@ -58,7 +58,10 @@ class UserDrawer extends StatelessWidget {
               leading: Icon(Icons.power_settings_new),
               title: Text('Sair'),
               onTap: () {
-                authBloc.add(LoggedOut());
+                Navigator.pop(context);
+                authBloc.add(
+                  LoggedOut(),
+                );
               },
             ),
           ],
