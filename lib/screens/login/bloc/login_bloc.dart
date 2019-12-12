@@ -22,9 +22,27 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginLoading();
 
       try {
-        final user = await authRepository.signIn(event.email, event.password);
-        print('user $user');
+        await authRepository.signIn(event.email, event.password);
+        yield LoginSuccess();
       } catch (error) {
+        yield LoginFailure(error: error);
+      }
+    }
+
+    if (event is LoginWithGoogle) {
+      try {
+        await authRepository.signInWithGoogle();
+        yield LoginSuccess();
+      } catch(error) {
+        yield LoginFailure(error: error);
+      }
+    }
+
+    if (event is LoginWithFacebook) {
+      try {
+        await authRepository.signInWithFacebook();
+        yield LoginSuccess();
+      } catch(error) {
         yield LoginFailure(error: error);
       }
     }

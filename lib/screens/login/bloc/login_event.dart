@@ -23,3 +23,7 @@ class LoginButtonPressed extends LoginEvent {
   @override
   String toString() => 'LoginButtonPressed { email: $email, password: $password }';
 }
+
+class LoginWithGoogle extends LoginEvent {}
+
+class LoginWithFacebook extends LoginEvent {}

@@ -127,8 +127,6 @@ class LoginFormState extends State<LoginForm> {
           password: password.value,
         ),
       );
-      
-      BlocProvider.of<AuthBloc>(context).add(LoggedIn());
     } catch (error) {
       var errorText;
       switch (error.code) {
@@ -167,28 +165,25 @@ class LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      builder: (context) => LoginBloc(authRepository: _authRepository),
-      child: BlocBuilder<LoginBloc, LoginState>(
-        builder: (context, event) {
-          print(event);
-          return Form(
-            key: _formKey,
-            autovalidate: true,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                getEmailField(),
-                Padding(
-                  padding: EdgeInsets.only(top: 24),
-                  child: getPasswordField(context),
-                ),
-                getSubmitButton(context),
-              ],
-            ),
-          );
-        },
-      ),
+    return BlocBuilder<LoginBloc, LoginState>(
+      bloc: BlocProvider.of<LoginBloc>(context),
+      builder: (context, state) {
+        return Form(
+          key: _formKey,
+          autovalidate: true,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              getEmailField(),
+              Padding(
+                padding: EdgeInsets.only(top: 24),
+                child: getPasswordField(context),
+              ),
+              getSubmitButton(context),
+            ],
+          ),
+        );
+      },
     );
   }
 }
