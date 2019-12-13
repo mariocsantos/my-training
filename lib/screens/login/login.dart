@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// import 'package:my_training/core/authentication.dart';
 import 'package:my_training/core/auth/auth.dart';
 import 'package:my_training/components/footer-link.dart';
 import 'package:my_training/screens/login/facebook_login_button.dart';
@@ -40,10 +40,24 @@ class LoginScreen extends StatelessWidget {
                         LoginBloc(authRepository: _authRepository),
                     child: BlocBuilder<LoginBloc, LoginState>(
                       builder: (context, state) {
-                        if (state is LoginSuccess) {
+                        if (state.isSuccess) {
                           BlocProvider.of<AuthBloc>(context).add(
                             LoggedIn(),
                           );
+                        }
+
+                        if (state.error != null) {
+                          final error = _getError(state.error);
+
+                          _onWidgetDidBuild(() {
+                            Scaffold.of(context)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(
+                                SnackBar(
+                                  content: Text(error),
+                                ),
+                              );
+                          });
                         }
 
                         return Column(
@@ -137,5 +151,37 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getError(PlatformException error) {
+    switch (error.code) {
+      case 'ERROR_WRONG_PASSWORD':
+        return 'Senha inválida ou o usuário não tem senha cadastrada, tente logar com a conta do google ou facebook.';
+        break;
+      case 'ERROR_INVALID_EMAIL':
+        return 'E-mail inválido.';
+        break;
+      case 'ERROR_USER_NOT_FOUND':
+        return 'Nenhum e-mail encontrado para este usuário.';
+        break;
+      case 'ERROR_USER_DISABLED':
+        return 'Este usuário foi desativado.';
+        break;
+      case 'ERROR_TOO_MANY_REQUESTS':
+        return 'Houve várias tentativas de login para este usuário.';
+        break;
+      case 'ERROR_OPERATION_NOT_ALLOWED':
+        return 'Este usuário não tem permissão para acessar o sistema.';
+        break;
+      default:
+        return 'Ocorreu um erro inesperado, nosso suporte já foi avisado';
+        break;
+    }
+  }
+
+  void _onWidgetDidBuild(Function callback) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      callback();
+    });
   }
 }
