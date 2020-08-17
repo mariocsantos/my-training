@@ -5,7 +5,7 @@ class FacebookAuth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FacebookLogin _facebookLogin = new FacebookLogin();
 
-  Future<FirebaseUser> singIn() async {
+  Future<FirebaseUser> signIn() async {
     final result = await _facebookLogin
         .logInWithReadPermissions(['email', 'public_profile']);
     switch (result.status) {

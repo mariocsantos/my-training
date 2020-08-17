@@ -18,7 +18,7 @@ class AuthRepository {
         _googleAuth = googleAuth ?? new GoogleAuth();
 
   Future<FirebaseUser> signInWithFacebook() async {
-    return _googleAuth.signIn();
+    return _facebookAuth.signIn();
   }
 
   Future<FirebaseUser> signInWithGoogle() async {
